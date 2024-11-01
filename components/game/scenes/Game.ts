@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import Player from "../objects/player";
@@ -19,7 +20,6 @@ export class Game extends Scene {
 
   private timerEvent!: Phaser.Time.TimerEvent;
   private timerText!: Phaser.GameObjects.Text;
-  private gameOver: boolean = false;
 
   private score = 0;
   private scoreText?: Phaser.GameObjects.Text;
@@ -111,14 +111,12 @@ export class Game extends Scene {
   }
 
   endGame() {
-    this.gameOver = true;
     this.timerText.setText("Time: 00:00");
     this.changeScene(); // Pass score to game over scene
   }
 
   private handleCatchPumpkin(_: any, s: any) {
     const pump = s as Phaser.Physics.Arcade.Image;
-    pump.width;
     pump.destroy();
     // Calculate points based on the pumpkin's width
     const baseWidth = 100; // Assuming the original width of the pumpkin sprite is 100px

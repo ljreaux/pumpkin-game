@@ -33,6 +33,7 @@ export class GameOver extends Scene {
       .setDepth(100);
 
     EventBus.emit("current-scene-ready", this);
+    EventBus.emit("finalScore", { name: "finalScore", value: score });
   }
 
   changeScene() {

@@ -1,7 +1,9 @@
 import { Scene } from "phaser";
 import pumpkins from "../utils/assets";
-
+import { getTopTen } from "@/app/actions";
+import { Score } from "@/models/scores";
 export class Preloader extends Scene {
+  topTen?: Score[];
   constructor() {
     super("Preloader");
   }
@@ -32,6 +34,11 @@ export class Preloader extends Scene {
     pumpkins.forEach((p) => {
       this.load.image(p.key, p.path);
     });
+    getTopTen()
+      .then((data) => {
+        this.registry.set("topTen", data);
+      })
+      .finally(() => this.create());
   }
 
   create() {
@@ -39,6 +46,6 @@ export class Preloader extends Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start("MainMenu");
+    this.scene.start("MainMenu", { topTen: this.topTen });
   }
 }
