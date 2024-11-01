@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useScore from "./useScore";
-import { createScore } from "@/app/actions";
 import { IRefPhaserGame } from "./PhaserGame";
 import { toast } from "@/hooks/use-toast";
+import axios from "axios";
 
 // ensures that phaser never loads on the server
 const PhaserGame = dynamic(
@@ -88,7 +88,11 @@ const ScoreForm = ({ score }: { score: number }) => {
   async function onSubmit({ name }: z.infer<typeof formSchema>) {
     if (hasSubmitted) return;
     try {
-      const savedScore = await createScore(name, score, new Date());
+      const { data: savedScore } = await axios.post("/api/scores", {
+        name,
+        score,
+        created_at: new Date(),
+      });
       if (!savedScore) throw new Error();
       toast({
         description: `Thanks for playing ${savedScore.name}, press the button to play again.`,

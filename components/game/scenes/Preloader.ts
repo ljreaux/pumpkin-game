@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import pumpkins from "../utils/assets";
-import { getTopTen } from "@/app/actions";
 import { Score } from "@/models/scores";
+import axios from "axios";
 export class Preloader extends Scene {
   topTen?: Score[];
   constructor() {
@@ -34,8 +34,10 @@ export class Preloader extends Scene {
     pumpkins.forEach((p) => {
       this.load.image(p.key, p.path);
     });
-    getTopTen()
-      .then((data) => {
+
+    axios
+      .get("/api/scores")
+      .then(({ data }) => {
         this.registry.set("topTen", data);
       })
       .finally(() => this.create());
